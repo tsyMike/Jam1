@@ -1,0 +1,14 @@
+Al poner esta carpeta en el proyecto se puede utilizar pooling de objetos con lo cual se evita destruir y crear demaciados objetos, es recomendado aplicar el pooling para cosas que se crean y destruyen rapidamente como las balas.
+
+-Con estar los scripts en el proyecto se puede usar la funcion:
+Pooler.Spawn([ObjetoAInstanciar(GameObject)],[TransformDeDondeInstanciarElObjeto], Quaternion.identity);
+En lugar de
+Instantiate([ObjetoAInstanciar],[TransformDeDondeInstanciarElObjeto], Quaternion.identity);
+
+Tambien se puede utilizar
+Pooler.Despawn(gameObject);
+en lugar de
+Destroy(gameObject)
+
+Tutorial:
+https://www.youtube.com/watch?v=BWt7kfmQHLk

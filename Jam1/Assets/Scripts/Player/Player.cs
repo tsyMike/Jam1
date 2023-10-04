@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     public ContactFilter2D movementFilter;
     private List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
 
+    [SerializeField] private LayerMask obstacleLayer;
+
     // public GameObject GameoverScreen;
 
     //------Dash System Variables
