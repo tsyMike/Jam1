@@ -7,12 +7,16 @@ public class MageBehaviour : MonoBehaviour
 {   
     public GameObject prefabProyectil;
     public float velocidadProyectil = 5f;
-   
-
+    
+    Animator anim;
 
     private void Start() {
+        anim=gameObject.GetComponent<Animator>();
         DetectarEnemigos.onEnemyRange+=Lanzar;
+        Player.flipped+=Flip;
+        Player.moves+=AnimateWithPlayer;
     }
+    
 
     void Lanzar(Transform objetivo)
     {
@@ -29,6 +33,13 @@ public class MageBehaviour : MonoBehaviour
             rb.velocity = direccion * velocidadProyectil;
         }
     }
-
-   
+    void Flip()
+    {
+        transform.localScale *= new Vector2(-1,1);
+    }
+    void AnimateWithPlayer(bool success)
+    {   
+        anim.SetBool(AnimationStrings.isMoving, success);
+    } 
+    
 }

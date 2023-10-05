@@ -15,6 +15,11 @@ public class Player : MonoBehaviour
     public float dashTime =2f;
     public float dashCD= 3f;
 
+    //Variables para que todos los seguidores se giren contigo
+    public delegate void Flipped();
+    public static Flipped flipped;
+    public delegate void Moves(bool val);
+    public static Moves moves;
 
     public float SlowMoveSpeed = 0.5f; //Si relentizados la velocidad se multiplica por este parametro.
 
@@ -71,10 +76,13 @@ public class Player : MonoBehaviour
                 }
             }
             animator.SetBool(AnimationStrings.isMoving, success);
+            moves?.Invoke(success);
         }
         else
         {
             animator.SetBool(AnimationStrings.isMoving, false);
+            moves?.Invoke(false);
+
         }
 
 
@@ -123,7 +131,7 @@ public class Player : MonoBehaviour
     }
 
     //Knockback
-    public int DashDMG=10; //Da;o del dash a los enemigos
+    [SerializeField]private int dashDMG = 10; //Da;o del dash a los enemigos
     public UnityEvent onKnockback;
     public float delay = 0.15f;    
     private void OnCollisionEnter2D(Collision2D collision)
@@ -147,6 +155,7 @@ public class Player : MonoBehaviour
     public bool isFacingRight { get {return _isFacingRight;} private set{
         if(_isFacingRight != value){
             transform.localScale *= new Vector2(-1,1);
+            flipped?.Invoke();
         }
         _isFacingRight = value;
     }} //variables para saber donde ve el personaje para reflejar el objeto
@@ -210,4 +219,5 @@ public class Player : MonoBehaviour
             }  
         }
 
+    public int DashDMG { get => dashDMG; set => dashDMG = value; }
 }

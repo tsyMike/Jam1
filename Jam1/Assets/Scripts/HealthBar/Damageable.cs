@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Damageable : MonoBehaviour
 {   
 
     //A character with this script on will take damage an be destroyed when its health reaches zero
 
+    //Health bar variables
+    public Image hpImage;
+    public Image hpEffectImage;
+
+    [SerializeField] private float hurtSpeed = 0.05f;
     //public UnityEvent<int, Vector2>damageableHit;
-    public UnityEvent<int,int> healthChanged;
+    public UnityEvent<float,float> healthChanged;
     Animator animator;
 
     public UnityEvent<GameObject> OnHitWithReference;
 
     [SerializeField]
-    private int _maxHealth;
+    private float _maxHealth;
 
-    public int MaxHealth{
+    public float MaxHealth{
         get
         {
             return _maxHealth;
@@ -28,8 +34,8 @@ public class Damageable : MonoBehaviour
         }
     }
     [SerializeField]
-    private int _health=100;
-    public int Health{
+    private float _health=100;
+    public float Health{
         get
         {
             return _health;
@@ -78,11 +84,26 @@ public class Damageable : MonoBehaviour
                 timeSinceHit=0;
             }
             timeSinceHit+=Time.deltaTime;
-        }  
+        }
+        //Si tiene una health bar se calcula=
+        if (hpImage!=null)
+        {
+            hpImage.fillAmount = _health/_maxHealth  ;
+
+            if(hpEffectImage.fillAmount > hpImage.fillAmount)
+            {
+                hpEffectImage.fillAmount -= hurtSpeed;
+            }
+            else
+            {
+                hpEffectImage.fillAmount = hpImage.fillAmount;
+            }
+        }
+        
        //Hit(10);
          
     }
-    public void Hit(int damage){
+    public void Hit(float damage){
         if (IsAlive&& !IsInvincible)
         {
             Health-=damage;
@@ -97,7 +118,7 @@ public class Damageable : MonoBehaviour
     private float strenght = 50, delay = 0.15f;
     [SerializeField] 
     private Rigidbody2D rb2d; 
-    public void Hit(int damage, GameObject sender){
+    public void Hit(float damage, GameObject sender){
         if (IsAlive&& !IsInvincible)
         {   
             Vector2 direction=(transform.position-sender.transform.position);
