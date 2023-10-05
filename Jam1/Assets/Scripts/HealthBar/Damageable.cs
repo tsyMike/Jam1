@@ -13,6 +13,12 @@ public class Damageable : MonoBehaviour
     public Image hpImage;
     public Image hpEffectImage;
 
+    public GameObject goldManager;
+    public int goldReward=1;
+    private void Start() {
+        goldManager=GameObject.FindGameObjectWithTag("Manager");
+    }
+
     [SerializeField] private float hurtSpeed = 0.05f;
     //public UnityEvent<int, Vector2>damageableHit;
     public UnityEvent<float,float> healthChanged;
@@ -49,6 +55,7 @@ public class Damageable : MonoBehaviour
             if (_health<=0)
             {
                 IsAlive=false;
+                goldManager.GetComponent<GoldManager>().Gain(goldReward);
                 Pooler.Despawn(gameObject);
                
             }

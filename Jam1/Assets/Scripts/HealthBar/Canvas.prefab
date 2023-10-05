@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8842404795349800801}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -66,8 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1647369041253643428, guid: 23dac83c5c14d48a6a2f5edfc6390c5a,
-    type: 3}
+  m_Sprite: {fileID: -1655584456, guid: 228ea415838e61846a372d5793fdd7fb, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -108,7 +106,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8842404795349800801}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -143,8 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4663063207240077100, guid: 23dac83c5c14d48a6a2f5edfc6390c5a,
-    type: 3}
+  m_Sprite: {fileID: 900458850, guid: 228ea415838e61846a372d5793fdd7fb, type: 3}
   m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -185,7 +181,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8842404795349800801}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -220,8 +215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1110501805984676346, guid: 23dac83c5c14d48a6a2f5edfc6390c5a,
-    type: 3}
+  m_Sprite: {fileID: 893818622, guid: 228ea415838e61846a372d5793fdd7fb, type: 3}
   m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -243,7 +237,6 @@ GameObject:
   - component: {fileID: 8842404795349800805}
   - component: {fileID: 8842404795349800804}
   - component: {fileID: 8842404795349800807}
-  - component: {fileID: 8842404795349800806}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -267,7 +260,6 @@ RectTransform:
   - {fileID: 8842404794019946488}
   - {fileID: 8842404794436020948}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -291,7 +283,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: -242444387
   m_SortingOrder: 5
   m_TargetDisplay: 0
@@ -335,20 +329,3 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8842404795349800806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8842404795349800800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fd7a6ebf123d4e6c8a1c475a96ab46b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpImage: {fileID: 8842404794436020949}
-  hpEffectImage: {fileID: 8842404794019946489}
-  hp: 0
-  maxHp: 120
-  hurtSpeed: 0.005

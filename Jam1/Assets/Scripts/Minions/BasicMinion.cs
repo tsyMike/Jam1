@@ -10,15 +10,24 @@ public class BasicMinion : MonoBehaviour
     NavMeshAgent agent;
     private Animator anim;
 
+    //public GameObject goldManager;
+    //public int goldReward=1;
+    
+
     private SpriteRenderer sr;
     private void Start() {
+        
         agent= GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         target = GameObject.FindGameObjectWithTag("Player").transform;
+        //goldManager=GameObject.FindGameObjectWithTag("Manager");
         anim= GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
     }
+    // private void OnDisable() {
+    //     goldManager.GetComponent<GoldManager>().Gain(goldReward);
+    // }
     private void Update() {
         agent.SetDestination(target.position);
         Vector2 targetVector = target.position;

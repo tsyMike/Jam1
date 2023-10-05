@@ -150,6 +150,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   damage: 5
+  goldManager: {fileID: 497413400440670855, guid: d9ddd8a2ec0038c46afbbc2b91d97a90, type: 3}
+  goldReward: 0
+  _isFacingRight: 1
 --- !u!195 &5449274013668512059
 NavMeshAgent:
   m_ObjectHideFlags: 0
