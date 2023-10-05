@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ExampleArmy : MonoBehaviour {
     private FormationBase _formation;
+    public CircleCollider2D cc;
 
     public FormationBase Formation {
         get {
@@ -70,6 +71,8 @@ public class ExampleArmy : MonoBehaviour {
         if (rf.Amount>=15)
         {
             rf.Rings=rf.Amount/15;
+            cc.radius=rf.Radius;
+
         }
     }
 

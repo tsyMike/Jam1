@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f10952094964ea3418955c4d76e1fc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 962706849748018800, guid: c187f8bd78a720d48ada7f7a28a51e62, type: 3}
   damage: 5
 --- !u!195 &5449274013668512059
 NavMeshAgent:
@@ -189,8 +189,8 @@ MonoBehaviour:
   OnHitWithReference:
     m_PersistentCalls:
       m_Calls: []
-  _maxHealth: 100
-  _health: 100
+  _maxHealth: 10
+  _health: 10
   _isAlive: 1
   IsInvincible: 0
   invincivilityTimer: 0.1

@@ -12,6 +12,7 @@ public class BasicMinion : MonoBehaviour
         agent= GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
     private void Update() {
         agent.SetDestination(target.position);
