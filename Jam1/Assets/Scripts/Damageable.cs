@@ -12,6 +12,8 @@ public class Damageable : MonoBehaviour
     public UnityEvent<int,int> healthChanged;
     Animator animator;
 
+    public UnityEvent<GameObject> OnHitWithReference;
+
     [SerializeField]
     private int _maxHealth;
 
@@ -41,6 +43,7 @@ public class Damageable : MonoBehaviour
             if (_health<=0)
             {
                 IsAlive=false;
+                Pooler.Despawn(gameObject);
                
             }
         }
@@ -51,7 +54,7 @@ public class Damageable : MonoBehaviour
     private bool IsInvincible=false;
     private float timeSinceHit=0;
    
-    public float invincivilityTimer=0.25f;
+    public float invincivilityTimer=0.1f;
 
     private bool IsAlive{
         get{
@@ -89,5 +92,28 @@ public class Damageable : MonoBehaviour
             //CharacterEvents.characterDamaged.Invoke(gameObject,damage);
         }
     }
+
+    //Damage with Knockback
+    private float strenght = 50, delay = 0.15f;
+    [SerializeField] 
+    private Rigidbody2D rb2d; 
+    public void Hit(int damage, GameObject sender){
+        if (IsAlive&& !IsInvincible)
+        {   
+            Vector2 direction=(transform.position-sender.transform.position);
+            rb2d.AddForce(direction*strenght,ForceMode2D.Impulse);
+            StartCoroutine(Reset());
+            Health-=damage;
+            IsInvincible=true;
+            
+            //Invokes a method to display the damage on screen
+            //CharacterEvents.characterDamaged.Invoke(gameObject,damage);
+        }
+    }
+    private IEnumerator Reset(){
+        yield return new WaitForSeconds(delay);
+        rb2d.velocity = Vector3.zero;
+    }
+    
     
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {   
@@ -9,6 +10,12 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private Rigidbody2D rb;
     public float moveSpeed = 1f;
+    //variables para el dash
+    public float dashSpeed =1.5f;
+    public float dashTime =2f;
+    public float dashCD= 3f;
+
+
     public float SlowMoveSpeed = 0.5f; //Si relentizados la velocidad se multiplica por este parametro.
 
      //Basic Animation Variables
@@ -26,6 +33,9 @@ public class Player : MonoBehaviour
 
     //------Dash System Variables
     private Vector2 lastMovedDirection;
+
+    
+    
 
     void Start()
     {
@@ -85,6 +95,54 @@ public class Player : MonoBehaviour
             lastMovedDirection = moveInput;
         
     }
+    //Scripts del dash
+    private bool canDash=true;
+    private bool isDashing=false;
+    void OnDash()
+    {   
+        if(canDash){
+            StartCoroutine(EndDash(dashTime));
+            moveSpeed=moveSpeed*dashSpeed;
+            canDash= false;
+            isDashing =true;
+        }
+    }
+    private IEnumerator EndDash(float espera)
+    {
+        // Espera durante el tiempo especificado.
+        yield return new WaitForSeconds(espera);
+        moveSpeed=moveSpeed/dashSpeed;
+        StartCoroutine(BeginDashCD(dashCD));
+        isDashing=false;
+        
+    }
+    private IEnumerator BeginDashCD(float espera)
+    {
+        yield return new WaitForSeconds(espera);
+        canDash=true;
+    }
+
+    //Knockback
+    public int DashDMG=10; //Da;o del dash a los enemigos
+    public UnityEvent onKnockback;
+    public float delay = 0.15f;    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {   
+        
+        if(isDashing){
+                Damageable damageable = collision.gameObject.GetComponent<Damageable>();
+                if(damageable){
+                    //Debug.Log("Hit"+attackDamage);
+                    damageable.Hit(DashDMG,gameObject);
+                }
+                // Verifica si el objeto que colisiona tiene un Rigidbody2D
+                
+        }
+        
+    }
+    
+    
+
     public bool _isFacingRight = true;
     public bool isFacingRight { get {return _isFacingRight;} private set{
         if(_isFacingRight != value){
@@ -151,4 +209,5 @@ public class Player : MonoBehaviour
                 return animator.GetBool(AnimationStrings.isAlive);
             }  
         }
+
 }

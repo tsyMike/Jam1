@@ -14,7 +14,8 @@ public class ExampleArmy : MonoBehaviour {
         set => _formation = value;
     }
 
-    [SerializeField] private GameObject _unitPrefab;
+    public GameObject _unitPrefab;
+    public RadialFormation rf;
     [SerializeField] private float _unitSpeed = 2;
 
     private readonly List<GameObject> _spawnedUnits = new List<GameObject>();
@@ -23,6 +24,8 @@ public class ExampleArmy : MonoBehaviour {
 
     private void Awake() {
         _parent = new GameObject("Unit Parent").transform;
+        AllyLocation.onAllyGet+=SpawnAllies;
+
     }
 
     private void Update() {
@@ -59,4 +62,15 @@ public class ExampleArmy : MonoBehaviour {
             Destroy(unit.gameObject);
         }
     }
+    
+    private void SpawnAllies(GameObject ally,int quantity){
+        _unitPrefab=ally;
+        rf = GetComponent<RadialFormation>();
+        rf.Amount+=quantity;
+        if (rf.Amount>=15)
+        {
+            rf.Rings=rf.Amount/15;
+        }
+    }
+
 }
