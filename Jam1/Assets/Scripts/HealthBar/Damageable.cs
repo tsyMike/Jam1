@@ -2,20 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Damageable : MonoBehaviour
 {   
 
     //A character with this script on will take damage an be destroyed when its health reaches zero
 
+    //Health bar variables
+    public Image hpImage;
+    public Image hpEffectImage;
+
+    [SerializeField] private float hurtSpeed = 0.05f;
     //public UnityEvent<int, Vector2>damageableHit;
-    public UnityEvent<int,int> healthChanged;
+    public UnityEvent<float,float> healthChanged;
     Animator animator;
 
-    [SerializeField]
-    private int _maxHealth;
+    public UnityEvent<GameObject> OnHitWithReference;
 
-    public int MaxHealth{
+    [SerializeField]
+    private float _maxHealth;
+
+    public float MaxHealth{
         get
         {
             return _maxHealth;
@@ -26,8 +34,8 @@ public class Damageable : MonoBehaviour
         }
     }
     [SerializeField]
-    private int _health=100;
-    public int Health{
+    private float _health=100;
+    public float Health{
         get
         {
             return _health;
@@ -41,6 +49,7 @@ public class Damageable : MonoBehaviour
             if (_health<=0)
             {
                 IsAlive=false;
+                Pooler.Despawn(gameObject);
                
             }
         }
@@ -51,7 +60,7 @@ public class Damageable : MonoBehaviour
     private bool IsInvincible=false;
     private float timeSinceHit=0;
    
-    public float invincivilityTimer=0.25f;
+    public float invincivilityTimer=0.1f;
 
     private bool IsAlive{
         get{
@@ -75,11 +84,26 @@ public class Damageable : MonoBehaviour
                 timeSinceHit=0;
             }
             timeSinceHit+=Time.deltaTime;
-        }  
+        }
+        //Si tiene una health bar se calcula=
+        if (hpImage!=null)
+        {
+            hpImage.fillAmount = _health/_maxHealth  ;
+
+            if(hpEffectImage.fillAmount > hpImage.fillAmount)
+            {
+                hpEffectImage.fillAmount -= hurtSpeed;
+            }
+            else
+            {
+                hpEffectImage.fillAmount = hpImage.fillAmount;
+            }
+        }
+        
        //Hit(10);
          
     }
-    public void Hit(int damage){
+    public void Hit(float damage){
         if (IsAlive&& !IsInvincible)
         {
             Health-=damage;
@@ -89,5 +113,28 @@ public class Damageable : MonoBehaviour
             //CharacterEvents.characterDamaged.Invoke(gameObject,damage);
         }
     }
+
+    //Damage with Knockback
+    private float strenght = 50, delay = 0.15f;
+    [SerializeField] 
+    private Rigidbody2D rb2d; 
+    public void Hit(float damage, GameObject sender){
+        if (IsAlive&& !IsInvincible)
+        {   
+            Vector2 direction=(transform.position-sender.transform.position);
+            rb2d.AddForce(direction*strenght,ForceMode2D.Impulse);
+            StartCoroutine(Reset());
+            Health-=damage;
+            IsInvincible=true;
+            
+            //Invokes a method to display the damage on screen
+            //CharacterEvents.characterDamaged.Invoke(gameObject,damage);
+        }
+    }
+    private IEnumerator Reset(){
+        yield return new WaitForSeconds(delay);
+        rb2d.velocity = Vector3.zero;
+    }
+    
     
 }

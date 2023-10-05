@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {   
@@ -9,6 +10,17 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private Rigidbody2D rb;
     public float moveSpeed = 1f;
+    //variables para el dash
+    public float dashSpeed =1.5f;
+    public float dashTime =2f;
+    public float dashCD= 3f;
+
+    //Variables para que todos los seguidores se giren contigo
+    public delegate void Flipped();
+    public static Flipped flipped;
+    public delegate void Moves(bool val);
+    public static Moves moves;
+
     public float SlowMoveSpeed = 0.5f; //Si relentizados la velocidad se multiplica por este parametro.
 
      //Basic Animation Variables
@@ -26,6 +38,9 @@ public class Player : MonoBehaviour
 
     //------Dash System Variables
     private Vector2 lastMovedDirection;
+
+    
+    
 
     void Start()
     {
@@ -61,10 +76,13 @@ public class Player : MonoBehaviour
                 }
             }
             animator.SetBool(AnimationStrings.isMoving, success);
+            moves?.Invoke(success);
         }
         else
         {
             animator.SetBool(AnimationStrings.isMoving, false);
+            moves?.Invoke(false);
+
         }
 
 
@@ -85,10 +103,59 @@ public class Player : MonoBehaviour
             lastMovedDirection = moveInput;
         
     }
+    //Scripts del dash
+    private bool canDash=true;
+    private bool isDashing=false;
+    void OnDash()
+    {   
+        if(canDash){
+            StartCoroutine(EndDash(dashTime));
+            moveSpeed=moveSpeed*dashSpeed;
+            canDash= false;
+            isDashing =true;
+        }
+    }
+    private IEnumerator EndDash(float espera)
+    {
+        // Espera durante el tiempo especificado.
+        yield return new WaitForSeconds(espera);
+        moveSpeed=moveSpeed/dashSpeed;
+        StartCoroutine(BeginDashCD(dashCD));
+        isDashing=false;
+        
+    }
+    private IEnumerator BeginDashCD(float espera)
+    {
+        yield return new WaitForSeconds(espera);
+        canDash=true;
+    }
+
+    //Knockback
+    [SerializeField]private int dashDMG = 10; //Da;o del dash a los enemigos
+    public UnityEvent onKnockback;
+    public float delay = 0.15f;    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {   
+        
+        if(isDashing){
+                Damageable damageable = collision.gameObject.GetComponent<Damageable>();
+                if(damageable){
+                    //Debug.Log("Hit"+attackDamage);
+                    damageable.Hit(DashDMG,gameObject);
+                }
+                // Verifica si el objeto que colisiona tiene un Rigidbody2D
+                
+        }
+        
+    }
+    
+    
+
     public bool _isFacingRight = true;
     public bool isFacingRight { get {return _isFacingRight;} private set{
         if(_isFacingRight != value){
             transform.localScale *= new Vector2(-1,1);
+            flipped?.Invoke();
         }
         _isFacingRight = value;
     }} //variables para saber donde ve el personaje para reflejar el objeto
@@ -151,4 +218,6 @@ public class Player : MonoBehaviour
                 return animator.GetBool(AnimationStrings.isAlive);
             }  
         }
+
+    public int DashDMG { get => dashDMG; set => dashDMG = value; }
 }

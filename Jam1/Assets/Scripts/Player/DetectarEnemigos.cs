@@ -2,9 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class DetectarEnemigos : MonoBehaviour
 {   
-    public GameObject target;
+    public GameObject target=null;
+
+    public delegate void OnEnemyRange(Transform tr);
+    public static OnEnemyRange onEnemyRange;
+
+    private float actualDelay=0f;
+    public float delay=2f;
+
+    
     void Update()
     {
         // Configura un filtro para buscar colliders en la capa "enemigos".
@@ -46,11 +55,19 @@ public class DetectarEnemigos : MonoBehaviour
             // Ahora 'enemigoMasCercano' contiene el collider del enemigo más cercano.
             if (enemigoMasCercano != null)
             {   
-                target=enemigoMasCercano.gameObject;
-                Debug.Log("Enemigo En rango");
+
+                if (actualDelay<=0)
+                {   
+                    target=enemigoMasCercano.gameObject;
+                    onEnemyRange?.Invoke(target.transform);
+                    actualDelay=delay;
+                }
+                actualDelay-=Time.deltaTime;
+                //Debug.Log("Enemigo En rango");
                 // Realiza acciones con el enemigo más cercano, por ejemplo:
                 // enemigoMasCercano.gameObject.GetComponent<Enemigo>().RealizarAccion();
             }
         }
     }
+    
 }

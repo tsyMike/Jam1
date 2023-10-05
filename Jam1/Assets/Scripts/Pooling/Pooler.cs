@@ -5,16 +5,16 @@ using UnityEngine;
 public static class Pooler
 {
     private static Dictionary<string, Pool> pools= new Dictionary<string, Pool>();
-    public static void Spawn(GameObject go, Vector3 pos, Quaternion rot)
+    public static GameObject Spawn(GameObject go, Vector3 pos, Quaternion rot)
     {
-        GameObject obj;
+        GameObject obj=null;
         string key= go.name.Replace("(Clone)","");
 
         if (pools.ContainsKey(key))
         {
             if (pools[key].inactive.Count==0)
             {
-                Object.Instantiate(go, pos, rot, pools[key].parent.transform);          
+                obj=Object.Instantiate(go, pos, rot, pools[key].parent.transform);          
             }
             else
             {
@@ -28,10 +28,11 @@ public static class Pooler
         else
         {
             GameObject newParent= new GameObject($"{key}_POOL");
-            Object.Instantiate(go, pos, rot, newParent.transform);
+            obj=Object.Instantiate(go, pos, rot, newParent.transform);
             Pool newPool = new Pool(newParent);
             pools.Add(key, newPool);
         }
+        return obj;
     }
     public static void Despawn(GameObject go)
     {
